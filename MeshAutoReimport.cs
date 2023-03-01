@@ -183,6 +183,9 @@ namespace MeshAutoReimport
                         else
                         {
                             float3 position = targetSlot.GlobalPosition;
+                            floatQ rotation = targetSlot.GlobalRotation;
+                            float3 scale = targetSlot.GlobalScale;
+
                             targetSlot.DestroyChildren();
                             
                             targetSlot.StartGlobalTask(async () =>
@@ -196,7 +199,13 @@ namespace MeshAutoReimport
 
                                     await ModelImporter.ImportModelAsync(path, targetSlot, settings,
                                         (bool)assetsOnObject ? targetSlot.AddSlot("Assets") : null, logoMenuProgress);
-                                    if (targetSlot != null) targetSlot.GlobalPosition = position;
+                                    
+                                    if (targetSlot != null)
+                                    {
+                                        targetSlot.GlobalPosition = position;
+                                        targetSlot.GlobalRotation = rotation;
+                                        targetSlot.GlobalScale = scale;
+                                    }
                                 }
                             });
                         }
